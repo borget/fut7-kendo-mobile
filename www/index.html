@@ -60,7 +60,7 @@
 						{"clubID":1,"pos":1,"clubName":"Kellogs","jj":18,"jg":39,"je":1, "jp":2, "gf":30,"gc":30,"dif":30,"pts":30},
 						{"clubID":2,"pos":2,"clubName":"Argentina","jj":19,"jg":17,"je":3, "jp":2, "gf":30,"gc":30,"dif":30,"pts":30},
 						{"clubID":3,"pos":3,"clubName":"Borussia","jj":10,"jg":13,"je":2, "jp":2, "gf":30,"gc":30,"dif":30,"pts":30},
-						{"clubID":4,"pos":4,"clubName":"RealBañil","jj":22,"jg":53,"je":5, "jp":2, "gf":30,"gc":30,"dif":30,"pts":30},
+						{"clubID":4,"pos":4,"clubName":"RealBa&ntilde;il","jj":22,"jg":53,"je":5, "jp":2, "gf":30,"gc":30,"dif":30,"pts":30},
 						{"clubID":5,"pos":5,"clubName":"AS Roma","jj":18,"jg":39,"je":1, "jp":2, "gf":30,"gc":30,"dif":30,"pts":30},
 						{"clubID":6,"pos":6,"clubName":"Leon","jj":19,"jg":17,"je":3, "jp":2, "gf":30,"gc":30,"dif":30,"pts":30},
 						{"clubID":7,"pos":7,"clubName":"Alemania","jj":10,"jg":13,"je":2, "jp":2, "gf":30,"gc":30,"dif":30,"pts":30},
@@ -89,9 +89,10 @@
                                     }
                                 }
                             },
-                            pageSize: 10
+                            pageSize: 8
                         },
                         height: 350,
+                        resizable: false,
                         scrollable: false,
                         sortable: true,
                         filterable: false,
@@ -101,7 +102,7 @@
                         },
                         columns: [
 							{ field: "pos", title: "L"},
-                            { field: "clubName", title: "Club", width: "35px"},
+                            { field: "clubName", title: "Club", width: 35},
                             { field: "jj", title: "JJ"},
                             { field: "jg", title: "G" },
                             { field: "je", title:"E" },

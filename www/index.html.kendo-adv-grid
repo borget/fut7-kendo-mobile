@@ -1,0 +1,256 @@
+<!doctype html>
+<html>
+	<head>
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width" />
+		<title></title>
+		
+		<!-- Kendo UI Mobile styles for all supported platforms -->
+		
+		<link rel="stylesheet" href="css/kendo/kendo.common.min.css">
+		<link rel="stylesheet" href="css/kendo/kendo.flat.min.css">
+		
+		<link rel="stylesheet" href="css/master.css">
+
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+
+		<!-- Kendo UI JavaScript -->
+		<script src="http://cdn.kendostatic.com/2012.2.710/js/kendo.all.min.js"></script>
+		
+		<link href="http://cdn.kendostatic.com/2012.2.710/styles/kendo.mobile.all.min.css" rel="stylesheet">
+				
+		<script src="phonegap.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="js/app.js"></script>
+
+	</head>
+	<body>
+ 		
+ 		<!-- The "layout" defines the common navbar and footer. Views are then swapped
+ 			 out as the content between this common header and footer -->
+
+		<div data-role="layout" data-id="main-layout">
+			<div data-role="header">
+				<div data-role="navbar">
+					<span data-role="view-title"></span>
+				</div>
+			</div>
+			<div data-role="footer">
+				<div data-role="tabstrip">
+					<a data-icon="home" href="#home">Home</a>
+					<a data-icon="settings" href="#settings">Settings</a>
+				</div>
+			</div>
+		</div>
+
+		<!-- These are the "views" that are displayed between the header and the footer
+			 of the layout above. They are specfied as contents of the layout via the
+			 data-layout="main-layout" where "main-layout" is the data-id of the desired
+			 layout -->
+
+		<div data-role="view" data-show="MYAPP.show" data-layout="main-layout" id="home" data-title="Home">
+			<div id="example">
+            <div id="grid"></div>
+
+            <script type="text/x-kendo-template" id="template">
+                <div class="tabstrip">
+                    <ul>
+                        <li class="k-state-active">
+                           Orders
+                        </li>
+                        <li>
+                            Contact Information
+                        </li>
+                    </ul>
+                    <div>
+                        <div class="orders"></div>
+                    </div>
+                    <div>
+                        <div class='employee-details'>
+                            <ul>
+                                <li><label>Country:</label>#= Country #</li>
+                                <li><label>City:</label>#= City #</li>
+                                <li><label>Address:</label>#= Address #</li>
+                                <li><label>Home Phone:</label>#= HomePhone #</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </script>
+
+            <script>
+                $(document).ready(function() {
+                    var element = $("#grid").kendoGrid({
+                        dataSource: {
+                            type: "odata",
+                            transport: {
+                                read: "http://demos.telerik.com/kendo-ui/service/Northwind.svc/Employees"
+                            },
+                            pageSize: 20,
+                            serverPaging: false,
+                            serverSorting: false
+                        },
+                        height: 550,
+                        sortable: false,
+                        pageable: false,
+                        detailTemplate: kendo.template($("#template").html()),
+                        detailInit: detailInit,
+                        dataBound: function() {
+                            this.expandRow(this.tbody.find("tr.k-master-row").first());
+                        },
+                        columns: [
+                            {
+                                field: "FirstName",
+                                title: "First Name",
+                                width: "120px"
+                            },
+                            {
+                                field: "LastName",
+                                title: "Last Name",
+                                width: "120px"
+                            },
+                            {
+                                field: "Country",
+                                width: "120px"
+                            },
+                            {
+                                field: "City",
+                                width: "120px"
+                            },
+                            {
+                                field: "Title"
+                            }
+                        ]
+                    });
+                });
+
+                function detailInit(e) {
+                    var detailRow = e.detailRow;
+
+                    detailRow.find(".tabstrip").kendoTabStrip({
+                        animation: {
+                            open: { effects: "fadeIn" }
+                        }
+                    });
+
+                    detailRow.find(".orders").kendoGrid({
+                        dataSource: {
+                            type: "odata",
+                            transport: {
+                                read: "http://demos.telerik.com/kendo-ui/service/Northwind.svc/Orders"
+                            },
+                            serverPaging: false,
+                            serverSorting: false,
+                            serverFiltering: false,
+                            pageSize: 7,
+                            filter: { field: "EmployeeID", operator: "eq", value: e.data.EmployeeID }
+                        },
+                        scrollable: false,
+                        sortable: false,
+                        pageable: false,
+                        columns: [
+                            { field: "OrderID", title:"ID", width: "70px" },
+                            { field: "ShipCountry", title:"Ship Country", width: "110px" },
+                            { field: "ShipAddress", title:"Ship Address" },
+                            { field: "ShipName", title: "Ship Name", width: "300px" }
+                        ]
+                    });
+                }
+            </script>
+            <style scoped>
+                .k-detail-cell .k-tabstrip .k-content {
+                    padding: 0.2em;
+                }
+                .employee-details ul
+                {
+                    list-style:none;
+                    font-style:italic;
+                    margin: 15px;
+                    padding: 0;
+                }
+                .employee-details ul li
+                {
+                    margin: 0;
+                    line-height: 1.7em;
+                }
+
+                .employee-details label
+                {
+                    display:inline-block;
+                    width:90px;
+                    padding-right: 10px;
+                    text-align: right;
+                    font-style:normal;
+                    font-weight:bold;
+                }
+            </style>
+        </div>
+		</div>
+
+		<div data-role="view" data-layout="main-layout" id="settings" data-title="Settings">
+			<div id="grid"></div>
+
+            <script>
+                $(document).ready(function() {
+					
+					var datasource = [
+						{"clubID":1,"pos":1,"clubName":"Kellogs","jj":18,"jg":39,"je":1, "jp":2, "gf":30,"gc":30,"dif":30,"pts":30},
+						{"clubID":2,"pos":2,"clubName":"Argentina","jj":19,"jg":17,"je":3, "jp":2, "gf":30,"gc":30,"dif":30,"pts":30},
+						{"clubID":3,"pos":3,"clubName":"Borussia","jj":10,"jg":13,"je":2, "jp":2, "gf":30,"gc":30,"dif":30,"pts":30},
+						{"clubID":4,"pos":4,"clubName":"RealBañil","jj":22,"jg":53,"je":5, "jp":2, "gf":30,"gc":30,"dif":30,"pts":30},
+						{"clubID":5,"pos":5,"clubName":"AS Roma","jj":18,"jg":39,"je":1, "jp":2, "gf":30,"gc":30,"dif":30,"pts":30},
+						{"clubID":6,"pos":6,"clubName":"Leon","jj":19,"jg":17,"je":3, "jp":2, "gf":30,"gc":30,"dif":30,"pts":30},
+						{"clubID":7,"pos":7,"clubName":"Alemania","jj":10,"jg":13,"je":2, "jp":2, "gf":30,"gc":30,"dif":30,"pts":30},
+						{"clubID":8,"pos":8,"clubName":"Galacticos","jj":22,"jg":53,"je":5, "jp":2, "gf":30,"gc":30,"dif":30,"pts":30},
+						{"clubID":9,"pos":9,"clubName":"Monterrey","jj":18,"jg":39,"je":1, "jp":2, "gf":30,"gc":30,"dif":30,"pts":30},
+						{"clubID":10,"pos":10,"clubName":"Manchester United","jj":19,"jg":17,"je":3, "jp":2, "gf":30,"gc":30,"dif":30,"pts":30},
+						{"clubID":11,"pos":11,"clubName":"Dep El Rocio","jj":10,"jg":13,"je":2, "jp":2, "gf":30,"gc":30,"dif":30,"pts":30},
+						{"clubID":12,"pos":12,"clubName":"Supercampeones","jj":22,"jg":53,"je":5, "jp":2, "gf":30,"gc":30,"dif":30,"pts":30}
+					];
+                    $("#grid").kendoGrid({
+                        dataSource: {
+                            data: datasource,
+                            schema: {
+                                model: {
+                                    fields: {
+										pos: { type: "number" },
+                                        clubName: { type: "string" },
+                                        jj: { type: "number" },
+                                        jg: { type: "number" },
+                                        je: { type: "number" },
+                                        jp: { type: "number" },
+                                        gf: { type: "number" },
+                                        gc: { type: "number" },
+                                        dif: { type: "number" },
+                                        pts: { type: "number" }
+                                    }
+                                }
+                            },
+                            pageSize: 10
+                        },
+                        height: 350,
+                        scrollable: false,
+                        sortable: true,
+                        filterable: false,
+                        pageable: {
+                            input: false,
+                            numeric: false
+                        },
+                        columns: [
+							{ field: "pos", title: "L"},
+                            { field: "clubName", title: "Club", width: "35px"},
+                            { field: "jj", title: "JJ"},
+                            { field: "jg", title: "G" },
+                            { field: "je", title:"E" },
+                            { field: "jp", title:"P" },
+                            { field: "gf", title:"GF" },
+                            { field: "gc", title:"GC" },
+                            { field: "dif", title:"DG" },
+                            { field: "pts", title:"PTS" }
+                        ]
+                    });
+                });
+            </script> 
+		</div>	
+
+	</body>
+</html>
