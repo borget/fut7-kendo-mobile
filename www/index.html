@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+	<head>
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width" />
+		<title></title>
+		
+		<!-- Kendo UI Mobile styles for all supported platforms -->
+		
+		<link rel="stylesheet" href="css/kendo/kendo.common.min.css">
+		<link rel="stylesheet" href="css/kendo/kendo.flat.min.css">
+		<link rel="stylesheet" href="css/kendo/kendo.dataviz.min.css">
+		<link rel="stylesheet" href="css/kendo/kendo.dataviz.flat.min.css">
+		
+
+		<link rel="stylesheet" href="css/master.css">
+
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+
+		<!-- Kendo UI JavaScript -->
+		<script src="http://cdn.kendostatic.com/2012.2.710/js/kendo.all.min.js"></script>
+		
+		<link href="http://cdn.kendostatic.com/2012.2.710/styles/kendo.mobile.all.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="css/kendo/kendo.rtl.min.css">
+		
+		<script src="phonegap.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="js/app.js"></script>
+
+	</head>
+	<body>
+ 		
+ 		<!-- The "layout" defines the common navbar and footer. Views are then swapped
+ 			 out as the content between this common header and footer -->
+
+		<div data-role="layout" data-id="main-layout">
+			<div data-role="header">
+				<div data-role="navbar">
+					<span data-role="view-title"></span>
+				</div>
+			</div>
+			<div data-role="footer">
+				<div data-role="tabstrip">
+					<a data-icon="home" href="#home">Home</a>
+					<a data-icon="settings" href="#settings">Settings</a>
+				</div>
+			</div>
+		</div>
+
+		<!-- These are the "views" that are displayed between the header and the footer
+			 of the layout above. They are specfied as contents of the layout via the
+			 data-layout="main-layout" where "main-layout" is the data-id of the desired
+			 layout -->
+
+		<div data-role="view" data-show="MYAPP.show" data-layout="main-layout" id="home" data-title="Home">
+			<p>Home</p>
+		</div>
+
+		<div data-role="view" data-layout="main-layout" id="settings" data-title="Settings">
+			<div id="grid"></div>
+
+            <script>
+                $(document).ready(function() {
+					
+					var datasource = [
+						{"clubID":1,"clubName":"Kellogs","jj":18,"jg":39,"je":1, "jp":2, "gf":30,"gc":30,"dif":30,"pts":30},
+						{"clubID":2,"clubName":"Argentina","jj":19,"jg":17,"je":3, "jp":2, "gf":30,"gc":30,"dif":30,"pts":30},
+						{"clubID":3,"clubName":"Borussia","jj":10,"jg":13,"je":2, "jp":2, "gf":30,"gc":30,"dif":30,"pts":30},
+						{"clubID":4,"clubName":"RealBañil","jj":22,"jg":53,"je":5, "jp":2, "gf":30,"gc":30,"dif":30,"pts":30}
+					];
+                    $("#grid").kendoGrid({
+                        dataSource: {
+                            data: datasource,
+                            schema: {
+                                model: {
+                                    fields: {
+                                        clubName: { type: "string" },
+                                        jj: { type: "number" },
+                                        jg: { type: "number" },
+                                        je: { type: "number" },
+                                        jp: { type: "number" },
+                                        gf: { type: "number" },
+                                        gc: { type: "number" },
+                                        dif: { type: "number" },
+                                        pts: { type: "number" }
+                                    }
+                                }
+                            },
+                            pageSize: 20
+                        },
+                        height: 550,
+                        scrollable: true,
+                        sortable: true,
+                        filterable: true,
+                        pageable: {
+                            input: true,
+                            numeric: false
+                        },
+                        columns: [
+                            { field: "clubName", title: "Club"},
+                            { field: "jj", title: "JJ"},
+                            { field: "jg", title: "G" },
+                            { field: "je", title:"E" },
+                            { field: "jp", title:"P" },
+                            { field: "gf", title:"GF" },
+                            { field: "gc", title:"GC" },
+                            { field: "dif", title:"DIF" },
+                            { field: "pts", title:"PTS" }
+                        ]
+                    });
+                });
+            </script> 
+		</div>	
+
+	</body>
+</html>
